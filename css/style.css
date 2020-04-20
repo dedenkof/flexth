@@ -14,6 +14,7 @@ body {
 	background-color: #ccc;
 	margin: 40px auto;
 	padding: 10px 0;
+
 }
 
 .container__item {
@@ -24,5 +25,6 @@ body {
 }
 
 .container {
-	display: flex;
+	display: inline-flex;
+
 }
