@@ -14,7 +14,7 @@ body {
 	background-color: #ccc;
 	margin: 40px auto;
 	padding: 10px 0;
-
+	height: 500px;
 }
 
 .container__item {
@@ -37,4 +37,10 @@ body {
 	justify-content: center;
 	justify-content: space-between;
 	justify-content: space-around;*/
+	align-items: stretch;
+	/*align-items: center;*/
+	/*align-items: flex-start;*/
+	/*align-items: flex-end;*/
+	/*align-items: center;*/
+	/*align-items: baseline;*/
 }
