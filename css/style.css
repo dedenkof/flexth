@@ -17,30 +17,71 @@ body {
 	height: 500px;
 }
 
-.container__item {
-	border: 2px solid #000;
-	padding: 10px 20px;
-	box-sizing: border-box;
-	margin: 20px;
-}
-
 .container {
 	display: flex;
-	flex-direction: row;
+
+	/*flex-direction: row; - по умолчанию*/
 	/*flex-direction: row-reverse;*/
 	/*flex-direction: column;*/
 	/*flex-direction: column-reverse;*/
-	flex-wrap: wrap;
+
+	/*flex-wrap: wrap; - по умолчанию*/
 	/*flex-wrap: wrap-reverse;*/
-	justify-content: flex-start;
-	/*justify-content: flex-end;
-	justify-content: center;
-	justify-content: space-between;
-	justify-content: space-around;*/
-	align-items: stretch;
-	/*align-items: center;*/
+	/*flex-wrap: no-wrap;*/
+
+	/*justify-content: flex-start; - по умолчанию*/
+	/*justify-content: flex-end;*/
+	/*justify-content: center;*/
+	/*justify-content: space-between;*/
+	/*justify-content: space-around;*/
+
+	/*align-content: flex-start; - по умолчанию*/
+	/*align-content: center;*/
+	/*align-content: flex-end;*/
+	/*align-content: space-between;*/
+	/*align-content: space-around;*/
+
+	/*align-items: stretch; - по умолчанию*/
 	/*align-items: flex-start;*/
-	/*align-items: flex-end;*/
 	/*align-items: center;*/
+	/*align-items: flex-end;*/
 	/*align-items: baseline;*/
+
+}
+
+.container__item {
+	border: 5px solid green;
+	box-sizing: border-box;
+	margin: 20px auto;
+	padding: 15px 20px;
+}
+
+.container__item:first-child {
+	align-self: flex-start;
+	order: 1; /* в конец */
+	margin: auto; /*ламает флекс модель расположения элементов*/
+}
+
+.container__item:nth-child(2) {
+	align-self: flex-end;
+	order: 0;  /*- по умолчанию*/
+}
+
+.container__item:nth-child(3) {
+	align-self: center;
+	order: 0;
+}
+
+.container__item:nth-child(4) {
+	align-self: baseline;
+	order: 0;
+}
+
+.container__item:nth-child(5) {
+	align-self: stretch;  /*- по умолчанию*/
+	order: 0;
+}
+
+.container__item:last-child(6) {
+	order: -1; /* в начало*/
 }
