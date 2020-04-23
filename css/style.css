@@ -36,6 +36,13 @@
 /*flex-basis: auto; - по умолчанию*/
 /*flex-grow: 0; - по умолчанию; 1 -рост*/
 /*flex-shrink: 1; - по умолчанию ужимается; 0 - запрет на ужимание*/
+
+/* Рассчет для flex-grow элементов
+
+ширина контейнера - (flex-basis * к-во элементов) - рассчет свободного места
+свободное место / (сумма значений flex-grow) - рассчет свободного места для flex-grow элемента
+flex-basis + (flex-grow * свбободное место для flex-grow элементов) - рассчет размеров flex-grow элементов
+*/
 * {
 	margin: 0;
 	padding: 0;
@@ -63,31 +70,14 @@ body {
 .container__item {
 	border: 5px solid green;
 	box-sizing: border-box;
-	margin: 20px;
 	padding: 15px 20px;
+	flex-basis: 150px;
 }
 
 .container__item:first-child {
-	margin-left: auto;
-	flex-shrink: 0;
-	flex-basis: 600px;
-}
-
-.container__item:nth-child(2) {
-
-}
-
-.container__item:nth-child(3) {
-
-}
-
-.container__item:nth-child(4) {
-
-}
-.container__item:nth-child(5) {
-
+	flex-grow: 1;
 }
 
 .container__item:last-child {
-	margin-right: auto;
+	flex-grow: 5;
 }
