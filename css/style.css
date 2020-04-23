@@ -1,3 +1,41 @@
+/*flex-direction: row; - по умолчанию*/
+/*flex-direction: row-reverse;*/
+/*flex-direction: column;*/
+/*flex-direction: column-reverse;*/
+
+/*flex-wrap: wrap; - по умолчанию*/
+/*flex-wrap: wrap-reverse;*/
+/*flex-wrap: no-wrap;*/
+
+/*justify-content: flex-start; - по умолчанию*/
+/*justify-content: flex-end;*/
+/*justify-content: center;*/
+/*justify-content: space-between;*/
+/*justify-content: space-around;*/
+
+/*align-content: flex-start; - по умолчанию*/
+/*align-content: center;*/
+/*align-content: flex-end;*/
+/*align-content: space-between;*/
+/*align-content: space-around;*/
+
+/*align-items: stretch; - по умолчанию*/
+/*align-items: flex-start;*/
+/*align-items: center;*/
+/*align-items: flex-end;*/
+/*align-items: baseline;*/
+
+/*align-self: stretch; - по умолчанию*/
+/*align-self: flex-start;*/
+/*align-self: center;*/
+/*align-self: flex-end;*/
+/*align-self: baseline;*/
+
+/*order: 0 - по умолчанию*/
+
+/*flex-basis: auto; - по умолчанию*/
+/*flex-grow: 0; - по умолчанию; 1 -рост*/
+/*flex-shrink: 1; - по умолчанию ужимается; 0 - запрет на ужимание*/
 * {
 	margin: 0;
 	padding: 0;
@@ -14,74 +52,42 @@ body {
 	background-color: #ccc;
 	margin: 40px auto;
 	padding: 10px 0;
-	height: 500px;
+	height: auto;
 }
 
 .container {
 	display: flex;
-
-	/*flex-direction: row; - по умолчанию*/
-	/*flex-direction: row-reverse;*/
-	/*flex-direction: column;*/
-	/*flex-direction: column-reverse;*/
-
-	/*flex-wrap: wrap; - по умолчанию*/
-	/*flex-wrap: wrap-reverse;*/
-	/*flex-wrap: no-wrap;*/
-
-	/*justify-content: flex-start; - по умолчанию*/
-	/*justify-content: flex-end;*/
-	/*justify-content: center;*/
-	/*justify-content: space-between;*/
-	/*justify-content: space-around;*/
-
-	/*align-content: flex-start; - по умолчанию*/
-	/*align-content: center;*/
-	/*align-content: flex-end;*/
-	/*align-content: space-between;*/
-	/*align-content: space-around;*/
-
-	/*align-items: stretch; - по умолчанию*/
-	/*align-items: flex-start;*/
-	/*align-items: center;*/
-	/*align-items: flex-end;*/
-	/*align-items: baseline;*/
-
+	flex-wrap: wrap;
 }
 
 .container__item {
 	border: 5px solid green;
 	box-sizing: border-box;
-	margin: 20px auto;
+	margin: 20px;
 	padding: 15px 20px;
 }
 
 .container__item:first-child {
-	align-self: flex-start;
-	order: 1; /* в конец */
-	margin: auto; /*ламает флекс модель расположения элементов*/
+	margin-left: auto;
+	flex-shrink: 0;
+	flex-basis: 600px;
 }
 
 .container__item:nth-child(2) {
-	align-self: flex-end;
-	order: 0;  /*- по умолчанию*/
+
 }
 
 .container__item:nth-child(3) {
-	align-self: center;
-	order: 0;
+
 }
 
 .container__item:nth-child(4) {
-	align-self: baseline;
-	order: 0;
-}
 
+}
 .container__item:nth-child(5) {
-	align-self: stretch;  /*- по умолчанию*/
-	order: 0;
+
 }
 
-.container__item:last-child(6) {
-	order: -1; /* в начало*/
+.container__item:last-child {
+	margin-right: auto;
 }
