@@ -63,29 +63,30 @@ body {
 }
 
 .container {
+
 	max-width: 1200px;
 	min-width: 320px;
 	background-color: #ccc;
-	margin: 40px auto;
 	padding: 10px 0;
-	height: auto;
 }
 
-.container {
+.news{
 	display: flex;
+	flex-wrap: wrap;
 }
 
-.container__item {
-	border: 5px solid green;
-	box-sizing: border-box;
-	padding: 15px 20px;
-	flex-basis: 300px;
+.news__item {
+
 }
 
-.container__item:first-child {
-	flex-shrink: 3;
+.news__info {
+
 }
 
-.container__item:last-child {
-	flex-shrink: 2;
+.news__author {
+
+}
+
+time{
+
 }
