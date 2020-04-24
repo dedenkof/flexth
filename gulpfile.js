@@ -24,31 +24,16 @@ const gulp = require('gulp'),
   gifsicle = require('imagemin-gifsicle'), // compress gif
   jpegtran = require('imagemin-jpegtran'), // compress jpeg
   optipng = require('imagemin-optipng'), // compress png
-    mozjpeg = require('imagemin-mozjpeg'); // compress jpeg
+  mozjpeg = require('imagemin-mozjpeg'); // compress jpeg
 
 
-// Config autoprefixer add prefix to the browsers
-const autoprefixerList = [
-  'Chrome >= 45',
-  'Firefox ESR',
-  'Edge >= 12',
-  'Explorer >= 10',
-  'iOS >= 9',
-  'Safari >= 9',
-  'Android >= 4.4',
-  'Opera >= 30'
-];
 
 // browserSync config
 const config = {
   server: {
-    baseDir: "app"
+    baseDir: "./dist"
   },
   notify: false,
-  //open: false,
-  //online: false, // work offline without internet connection
-  //tunnel: false, tunnel: "projectName",  demonstration http://projectname.localtunnel.me
-  // startPath: 'index.html',
   host: 'localhost',
   port: 9000,
   //proxy: "yourlocal.dev",
@@ -83,17 +68,33 @@ gulp.task('html', () =>
 
 // Deploy css via sass preprocessor
 gulp.task('sass', () =>
-  gulp.src('app/sass/**/*.scss')
+  gulp.src('app/sass/*.scss')
     .pipe(plumber({ errorHandler: onError }))
     .pipe(sourcemaps.init())
     .pipe(sass({outputStyle: 'expanded'}))
-    //.pipe(autoprefixer({ browsers: autoprefixerList, cascade: false}))
+    .pipe(autoprefixer())
     // .pipe(gcmq())
     //.pipe(concat('main.css'))
     //.pipe(rename({suffix: '.min'}))
-    //.pipe(cleanCSS({level: 2}))
+    .pipe(cleanCSS({level:{
+        1 : {
+          all: false,
+          removeEmpty: true,
+          removeNegativePaddings: true,
+          removeQuotes: true,
+          removeWhitespace: true,
+          replaceZeroUnits: true,
+          specialComments: 0,
+        },
+        2 : {
+          removeEmpty: true,
+          removeDuplicateMediaBlocks: true,
+          removeDuplicateRules: true,
+          mergeMedia: true,
+        }
+      } }))
     .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('app/css'))
+    .pipe(gulp.dest('dist/css/'))
     .pipe(browserSync.reload({
       stream: true
     }))
@@ -102,35 +103,52 @@ gulp.task('sass', () =>
 
 // Copy all generated img files into build directory
 gulp.task('images', () =>
-  gulp.src('app/img')
+  gulp.src('app/img/*.{png,jpg,gif,svg,ico}')
     .pipe(cache(imagemin([
-        imagemin.gifsicle({interlaced: true}),
-        mozjpeg({quality: 75, progressive: true}),
-        imagemin.optipng({optimizationLevel: 5}),
-        imagemin.svgo({
-            plugins: [
-                {removeViewBox: true},
-                {cleanupIDs: false}
-            ]
-        })
+      imagemin.gifsicle({interlaced: true}),
+      mozjpeg({quality: 75, progressive: true}),
+      imagemin.optipng({optimizationLevel: 5}),
+      imagemin.svgo({
+        plugins: [
+          {removeViewBox: true},
+          {cleanupIDs: false}
+        ]
+      })
     ], {
-        verbose: true
+      verbose: true
     })))
-    .pipe(gulp.dest('dist/img'))
+    .pipe(gulp.dest('dist/img/'))
     .pipe(browserSync.reload({
       stream: true
     }))
 );
 
+// Include style, js, favicon and markup to main page
+gulp.task('inject', (done) => {
+
+  gulp.src('dist/css/main.css', {read: false});
+
+  gulp.src('app/*.html')
+    .pipe(includeFiles())
+
+
+    .pipe(gulp.dest('dist/'))
+    .pipe(browserSync.reload({
+      stream: true
+    }));
+  done();
+});
+
+
 // reload after change via browserSync
 gulp.task('browserSync', () =>
-    browserSync(config)
+  browserSync(config)
 );
 
-// delete build dir
+
 // delete build dir
 gulp.task('clean', (cb) =>
-  rimraf('dist', cb)
+  rimraf('./dist', cb)
 );
 
 // clear cashe images
@@ -140,29 +158,19 @@ gulp.task('clearCache', () =>
 
 // Build Production Site
 gulp.task('buildDist', (done) => {
-  const buildcss = gulp.src(['app/css/**/*.css'])
-    .pipe(gulp.dest('dist/css'));
+  // const buildcss = gulp.src(['app/css/**/*.css'])
+  //   .pipe(gulp.dest('dist/css'));
 
-
-  /*const buildJs = gulp.src('app/js/!**!/!*.js')
-    .pipe(gulp.dest('dist/js'));
-
-  const buildData = gulp.src('app/data/!**!/!*')
-    .pipe(gulp.dest('dist/data'));
-
-  const buildImages = gulp.src('app/images/!**!/!*')
-    .pipe(gulp.dest('dist/images'));*/
-
-  const buildImages = gulp.src('src/img/**/*.*')
-    .pipe(gulp.dest('dist/img'));
+  const buildImages = gulp.src('app/img/')
+    .pipe(gulp.dest('dist/img/'));
   done();
 });
 
 gulp.task('watch', () => {
   // STYLES, SCRIPTS, HTML, IMAGES, FONTS
-  gulp.watch('app/sass/**/*.scss', gulp.parallel('sass'));
-  gulp.watch('app/*.html', gulp.parallel('html'));
-  gulp.watch('src/img/**/*.*', gulp.series('images'));
+  gulp.watch('app/*.html', gulp.series('html', 'inject'));
+  gulp.watch('app/sass/*.scss', gulp.parallel('sass'));
+  gulp.watch('app/img/*.*', gulp.series('images'));
 
 });
 
@@ -171,6 +179,6 @@ gulp.task('watch', () => {
 
 
 // Build Production Site with all updates
-gulp.task('build', gulp.series(['clean', gulp.parallel('html', 'sass', 'images', 'buildDist')]));
+gulp.task('build', gulp.series(['clean', gulp.parallel('html', 'sass', 'images')]));
 
-gulp.task('default', gulp.series(['build', gulp.parallel('watch', 'browserSync')]));
+gulp.task('default', gulp.series(['build', 'inject', gulp.parallel('watch', 'browserSync')]));
